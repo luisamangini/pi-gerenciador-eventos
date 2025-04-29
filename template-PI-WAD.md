@@ -31,7 +31,8 @@ Anna Peixoto tem 21 anos, é estudante universitária e estagiária de marketing
 Apesar do esforço para se manter organizada, Anna sente dificuldade em lidar com a quantidade de informações espalhadas em diferentes plataformas. Já perdeu prazos de inscrição para vestibulares e cursos importantes, esqueceu documentos essenciais em eventos e, por vezes, sentiu-se perdida tentando acompanhar todos os preparativos necessários.
 Para resolver esses problemas, ela precisa de uma ferramenta que centralize inscrições de eventos, prazos importantes, documentos a serem levados e lembretes personalizados, com integração simples ao seu calendário e e-mail. Uma plataforma que, além de organizar suas tarefas e compromissos, também facilite o deslocamento para eventos e ajude a reduzir o estresse de perder prazos e informações importantes.
 
-assets/tpne.jpg
+
+![Imagem de exemplo](assets/tpne.jpg)
 
 ### 2.2. User Stories (Semana 01)
 
