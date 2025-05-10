@@ -1,3 +1,43 @@
+# Wireframes e Diagrama de Banco de Dados
+
+## Introdução  
+Este documento reúne:
+
+1. **Wireframes** das duas telas principais:  
+   - **Tela Principal (Dashboard/Listagem de Eventos)**  
+   - **Tela de Detalhes de Evento**
+
+2. **Diagrama relacional** que garante a estrutura de dados necessária para filtros, lembretes, confirmações e integrações.
+
+---
+
+## Diagrama de Banco de Dados
+
+![Diagrama Relacional](../assets/modelo-banco.png)
+
+### Principais entidades e relacionamentos
+
+- **users**  
+  Usuários da plataforma (Anna e demais).  
+- **categories** / **priorities**  
+  Domínios para filtrar eventos.  
+- **events**  
+  Eventos com data, hora, local, status e prazo de inscrição.  
+- **event_requirements**  
+  “Tarefas” ou documentos necessários (ex.: “Levar RG”).  
+- **event_reminders**  
+  Lembretes por requisito para cada usuário.  
+- **event_attendees**  
+  Quem confirmou presença.  
+- **user_integrations**  
+  Credenciais para integrar Google/Outlook Calendar e SMTP.  
+- **calendar_syncs**  
+  Registro de cada evento sincronizado no calendário externo.  
+- **notification_logs**  
+  Histórico de envios de e-mail e notificações push.
+
+Cada tabela foi desenhada para suportar as funcionalidades listadas nos wireframes, garantindo que filtros, lembretes e integrações fluam de forma consistente na aplicação.
+
 # Web Application Document - Projeto Individual - Módulo 2 - Inteli
 
 **_Os trechos em itálico servem apenas como guia para o preenchimento da seção. Por esse motivo, não devem fazer parte da documentação final._**
