@@ -178,12 +178,44 @@ CREATE INDEX idx_reminders_time  ON event_reminders(remind_at);
 *Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
 
 ### 3.3. Wireframes (Semana 03)
+## 3.3 Wireframes
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização).*
+Os wireframes abaixo representam as principais telas da aplicação web desenvolvida neste projeto, cobrindo de forma visual as funcionalidades descritas nas User Stories. O foco está na organização da interface, fluxo de navegação e apresentação clara das ações do usuário.
+
+### Tela 1 – Dashboard (Tela Principal)
+A primeira tela apresenta a listagem de eventos, com filtros por categoria e prioridade. Permite acesso direto ao calendário e à criação de novos eventos.
+- **User Story atendida:** US01
+
+### Tela 2 – Calendário Pessoal
+Visual mensal dos compromissos marcados pelo usuário, com destaque por prioridade. Facilita o planejamento e a integração com o calendário pessoal.
+- **User Stories atendidas:** US01, US03
+
+### Tela 3 – Detalhes do Evento
+Exibe informações completas do evento: nome, data, local, link de inscrição e lembretes personalizados. Possui botões para confirmar presença e adicionar ao calendário.
+- **User Stories atendidas:** US02, US03, US04, US05, US06
+
+### Tela 4 – Quem Vai
+Mostra a lista de participantes confirmados, com opção de ocultar presença. Facilita a socialização e evita desconfortos sociais.
+- **User Story atendida:** US04
+
+As imagens dos wireframes estão a seguir:
+
+### Tela 1 – Dashboard
+![Tela 1 – Dashboard](./assets/wireframetela1)
+
+### Tela 2 – Calendário Pessoal
+![Tela 2 – Calendário](../assets/wireframetela2)
+
+### Tela 3 – Detalhes do Evento
+![Tela 3 – Detalhes do Evento](../assets/wireframetela3)
+
+### Tela 4 – Quem Vai
+![Tela 4 – Quem Vai](../assets/wireframetela4)
+
 
 ### 3.4. Guia de estilos (Semana 05)
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
+*Descreva aqui orientações gerais para o leitor sobre assets/wireframetela4como utilizar os componentes do guia de estilos de sua solução.*
 
 
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
