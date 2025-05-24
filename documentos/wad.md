@@ -58,9 +58,9 @@ Cada tabela foi desenhada para suportar as funcionalidades listadas nos wirefram
 
 ## <a name="c1"></a>1. Introdução (Semana 01)
 
-Organizar eventos e compromissos é parte essencial da vida acadêmica, profissional e pessoal. No entanto, em meio a tantos prazos, inscrições e deslocamentos, é comum se perder em detalhes importantes: esquecer documentos, perder o prazo de uma inscrição ou chegar atrasado por não ter previsto o trânsito. Pensando em resolver essas dores reais e cotidianas, este projeto propõe o desenvolvimento de uma plataforma inteligente para gerenciamento de eventos e compromissos.
-A solução vai além da simples inscrição em eventos: ela centraliza prazos importantes, permite salvar links de inscrições externas, organiza lembretes personalizados sobre o que fazer ou levar antes de cada evento, integra-se com o calendário e o e-mail do usuário, e facilita o deslocamento através da integração com aplicativos de GPS. Além disso, permite visualizar quem também confirmou presença, ajudando a planejar interações sociais de forma mais natural e evitando desconfortos.
-Com uma interface intuitiva, categorização de eventos por temas e prioridade, lembretes práticos e gestão de informações relevantes em um único lugar, a plataforma visa não apenas lembrar o usuário de seus compromissos, mas transformar toda a experiência de participação em eventos em algo mais organizado, eficiente e agradável.
+Organizar eventos e compromissos é uma parte essencial da vida acadêmica, profissional e pessoal. No entanto, em meio a tantos prazos, inscrições e deslocamentos, é comum se perder em detalhes importantes: esquecer documentos, perder o prazo de uma inscrição ou chegar atrasado por não ter previsto o trânsito.
+Pensando em resolver essas dores reais e cotidianas, este projeto propõe o desenvolvimento de uma plataforma inteligente, segura e totalmente individual para o gerenciamento de eventos e compromissos. A solução vai além da simples inscrição: ela permite centralizar prazos importantes, salvar links de inscrições externas, organizar lembretes personalizados sobre o que fazer ou levar antes de cada evento e facilitar o deslocamento através da integração com aplicativos de GPS.
+Como forma de garantir a privacidade da usuária, o acesso à plataforma é protegido por senha, garantindo que apenas ela possa visualizar e editar seus compromissos. Com uma interface intuitiva, categorização de eventos por temas e prioridade, e gestão centralizada de informações relevantes, o sistema visa não apenas lembrar a usuária de seus compromissos, mas transformar toda a experiência de participação em eventos em algo mais organizado, prático e sem estresse.
 
 ---
 
@@ -79,9 +79,8 @@ Para resolver esses problemas, ela precisa de uma ferramenta que centralize insc
 USER STORY 01 | Como usuária, quero visualizar eventos organizados por categorias e níveis de prioridade, para encontrar de forma rápida os que mais combinam com meu interesse e com a minha disponibilidade.
 USER STORY 02 | Como usuária, quero receber lembretes personalizados sobre tarefas ou documentos que preciso preparar antes de um evento, para garantir que esteja completamente pronta e evitar esquecimentos.
 USER STORY 03 | Como usuária, quero integrar os eventos confirmados diretamente ao meu calendário pessoal e e-mail, para não correr o risco de esquecer compromissos importantes.
-USER STORY 04 | Como usuária, quero ver quem confirmou presença nos eventos, para me sentir mais confortável em participar e evitar situações desconfortáveis.
-USER STORY 05 | Como usuária, quero acessar facilmente o endereço do evento e receber alertas sobre o trânsito até o local, para conseguir me planejar melhor e chegar no horário.
-USER STORY 06 | Como usuária, quero adicionar links de inscrições e associar prazos importantes dentro da plataforma, para não perder oportunidades de cursos, vestibulares ou eventos que sejam relevantes para o meu crescimento acadêmico e profissional.
+USER STORY 04 | Como usuária, quero acessar facilmente o endereço do evento e receber alertas sobre o trânsito até o local, para conseguir me planejar melhor e chegar no horário.
+USER STORY 05 | Como usuária, quero adicionar links de inscrições e associar prazos importantes dentro da plataforma, para não perder oportunidades de cursos, vestibulares ou eventos que sejam relevantes para o meu crescimento acadêmico e profissional.
 
 
 User Story analisada: Como usuária, quero adicionar links de inscrições e associar prazos importantes dentro da plataforma, para não perder oportunidades de cursos, vestibulares ou eventos que sejam relevantes para o meu crescimento acadêmico e profissional.
