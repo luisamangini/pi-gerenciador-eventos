@@ -1,60 +1,4 @@
-# Wireframes e Diagrama de Banco de Dados
-
-## Introdução  
-Este documento reúne:
-
-1. **Wireframes** das duas telas principais:  
-   - **Tela Principal (Dashboard/Listagem de Eventos)**  
-   - **Tela de Detalhes de Evento**
-
-2. **Diagrama relacional** que garante a estrutura de dados necessária para filtros, lembretes, confirmações e integrações.
-
----
-
-## Diagrama de Banco de Dados
-
-![Diagrama Relacional](../assets/modelo-banco.png)
-
-### Principais entidades e relacionamentos
-
-- **users**  
-  Usuários da plataforma (Anna e demais).  
-- **categories** / **priorities**  
-  Domínios para filtrar eventos.  
-- **events**  
-  Eventos com data, hora, local, status e prazo de inscrição.  
-- **event_requirements**  
-  “Tarefas” ou documentos necessários (ex.: “Levar RG”).  
-- **event_reminders**  
-  Lembretes por requisito para cada usuário.  
-- **event_attendees**  
-  Quem confirmou presença.  
-- **user_integrations**  
-  Credenciais para integrar Google/Outlook Calendar e SMTP.  
-- **calendar_syncs**  
-  Registro de cada evento sincronizado no calendário externo.  
-- **notification_logs**  
-  Histórico de envios de e-mail e notificações push.
-
-Cada tabela foi desenhada para suportar as funcionalidades listadas nos wireframes, garantindo que filtros, lembretes e integrações fluam de forma consistente na aplicação.
-
 # Web Application Document - Projeto Individual - Módulo 2 - Inteli
-
-**_Os trechos em itálico servem apenas como guia para o preenchimento da seção. Por esse motivo, não devem fazer parte da documentação final._**
-
-## Nome do Projeto
-
-#### Autor do projeto
-
-## Sumário
-
-1. [Introdução](#c1)  
-2. [Visão Geral da Aplicação Web](#c2)  
-3. [Projeto Técnico da Aplicação Web](#c3)  
-4. [Desenvolvimento da Aplicação Web](#c4)  
-5. [Referências](#c5)  
-
-<br>
 
 ## <a name="c1"></a>1. Introdução (Semana 01)
 
@@ -72,7 +16,7 @@ Apesar do esforço para se manter organizada, Anna sente dificuldade em lidar co
 Para resolver esses problemas, ela precisa de uma ferramenta que centralize inscrições de eventos, prazos importantes, documentos a serem levados e lembretes personalizados, com integração simples ao seu calendário e e-mail. Uma plataforma que, além de organizar suas tarefas e compromissos, também facilite o deslocamento para eventos e ajude a reduzir o estresse de perder prazos e informações importantes.
 
 
-![Imagem de exemplo](assets/tpne.jpg)
+![Imagem de exemplo](../assets/tpne.jpg)
 
 ### 2.2. User Stories (Semana 01)
 
@@ -105,9 +49,118 @@ Testável- A funcionalidade pode ser facilmente testada criando links e prazos f
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.*
+![Imagem de exemplo](../assets/Modelo-Banco.png)
 
-*Posicione também o modelo físico com o Schema do BD (arquivo .sql)*
+```
+-- 1. Usuários
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Categorias
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- 3. Prioridades
+CREATE TABLE priorities (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL UNIQUE,
+  icon VARCHAR(100)
+);
+
+-- 4. Eventos (com campos de status e geolocalização)
+CREATE TYPE event_status AS ENUM ('scheduled','cancelled','postponed','completed');
+
+CREATE TABLE events (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  description TEXT,
+  start_datetime TIMESTAMP NOT NULL,
+  end_datetime TIMESTAMP,
+  address VARCHAR(255),
+  latitude  DECIMAL(9,6),
+  longitude DECIMAL(9,6),
+  maps_url VARCHAR(255),
+  category_id INTEGER NOT NULL REFERENCES categories(id),
+  priority_id INTEGER NOT NULL REFERENCES priorities(id),
+  status event_status NOT NULL DEFAULT 'scheduled',
+  registration_deadline DATE,
+  created_by INTEGER REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Template de requisitos/documentos de evento
+CREATE TABLE event_requirements (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  description VARCHAR(255) NOT NULL  -- ex: "Levar RG", "Comprar ingresso"
+);
+
+-- 6. Lembretes do usuário para cada requisito
+CREATE TABLE event_reminders (
+  id SERIAL PRIMARY KEY,
+  requirement_id INTEGER NOT NULL REFERENCES event_requirements(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  remind_at TIMESTAMP,                   -- quando notificar
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(requirement_id, user_id)
+);
+
+-- 7. Participações / Inscrições
+CREATE TABLE event_attendees (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status VARCHAR(20) NOT NULL DEFAULT 'confirmed',
+  registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(event_id, user_id)
+);
+
+-- 8. Integrações de usuário (Calendar & E-mail)
+CREATE TABLE user_integrations (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  provider VARCHAR(50) NOT NULL,           -- ex: 'google_calendar', 'outlook', 'smtp'
+  access_token TEXT NOT NULL,
+  refresh_token TEXT,
+  expires_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 9. Sincronização de convites no calendário
+CREATE TABLE calendar_syncs (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  integration_id INTEGER NOT NULL REFERENCES user_integrations(id),
+  external_event_id VARCHAR(255) NOT NULL, -- ID gerado pelo provedor (iCal UID, etc)
+  synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(event_id, integration_id)
+);
+
+-- 10. Log de notificações enviadas
+CREATE TABLE notification_logs (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  event_id INTEGER REFERENCES events(id),
+  type VARCHAR(50) NOT NULL,              -- 'email', 'push', 'calendar'
+  status VARCHAR(20) NOT NULL,            -- 'sent', 'failed'
+  payload JSONB,                          -- resposta da API / erro
+  sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Índices para otimizar buscas
+CREATE INDEX idx_events_category ON events(category_id);
+CREATE INDEX idx_events_priority ON events(priority_id);
+CREATE INDEX idx_events_start    ON events(start_datetime);
+CREATE INDEX idx_reminders_time  ON event_reminders(remind_at);
+
+```
 
 ### 3.1.1 BD e Models (Semana 5)
 *Descreva aqui os Models implementados no sistema web*
@@ -124,12 +177,44 @@ Testável- A funcionalidade pode ser facilmente testada criando links e prazos f
 *Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
 
 ### 3.3. Wireframes (Semana 03)
+## 3.3 Wireframes
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização).*
+Os wireframes abaixo representam as principais telas da aplicação web desenvolvida neste projeto, cobrindo de forma visual as funcionalidades descritas nas User Stories. O foco está na organização da interface, fluxo de navegação e apresentação clara das ações do usuário.
+
+### Tela 1 – Dashboard (Tela Principal)
+A primeira tela apresenta a listagem de eventos, com filtros por categoria e prioridade. Permite acesso direto ao calendário e à criação de novos eventos.
+- **User Story atendida:** US01
+
+### Tela 2 – Calendário Pessoal
+Visual mensal dos compromissos marcados pelo usuário, com destaque por prioridade. Facilita o planejamento e a integração com o calendário pessoal.
+- **User Stories atendidas:** US01, US03
+
+### Tela 3 – Detalhes do Evento
+Exibe informações completas do evento: nome, data, local, link de inscrição e lembretes personalizados. Possui botões para confirmar presença e adicionar ao calendário.
+- **User Stories atendidas:** US02, US03, US04, US05, US06
+
+### Tela 4 – Quem Vai
+Mostra a lista de participantes confirmados, com opção de ocultar presença. Facilita a socialização e evita desconfortos sociais.
+- **User Story atendida:** US04
+
+As imagens dos wireframes estão a seguir:
+
+### Tela 1 – Dashboard
+![Tela 1 – Dashboard](./assets/wireframetela1)
+
+### Tela 2 – Calendário Pessoal
+![Tela 2 – Calendário](../assets/wireframetela2)
+
+### Tela 3 – Detalhes do Evento
+![Tela 3 – Detalhes do Evento](../assets/wireframetela3)
+
+### Tela 4 – Quem Vai
+![Tela 4 – Quem Vai](../assets/wireframetela4)
+
 
 ### 3.4. Guia de estilos (Semana 05)
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
+*Descreva aqui orientações gerais para o leitor sobre assets/wireframetela4como utilizar os componentes do guia de estilos de sua solução.*
 
 
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
