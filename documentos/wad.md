@@ -49,132 +49,62 @@ Testável- A funcionalidade pode ser facilmente testada criando links e prazos f
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-![Imagem de exemplo](../assets/Modelo-Banco.png)
+A seguir está o diagrama relacional representando a estrutura de dados utilizada para organizar eventos, lembretes, categorias e usuários. Ele foi construído com base nas necessidades funcionais descritas nas User Stories e garante a integridade dos dados.
 
-```
--- 1. Usuários
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(150) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+![Imagem de exemplo](../assets/diagrama.png)
 
--- 2. Categorias
-CREATE TABLE categories (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(50) NOT NULL UNIQUE
-);
 
--- 3. Prioridades
-CREATE TABLE priorities (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(20) NOT NULL UNIQUE,
-  icon VARCHAR(100)
-);
+As principais tabelas são:
 
--- 4. Eventos (com campos de status e geolocalização)
-CREATE TYPE event_status AS ENUM ('scheduled','cancelled','postponed','completed');
+users: Usuário individual da aplicação (único login).
 
-CREATE TABLE events (
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(150) NOT NULL,
-  description TEXT,
-  start_datetime TIMESTAMP NOT NULL,
-  end_datetime TIMESTAMP,
-  address VARCHAR(255),
-  latitude  DECIMAL(9,6),
-  longitude DECIMAL(9,6),
-  maps_url VARCHAR(255),
-  category_id INTEGER NOT NULL REFERENCES categories(id),
-  priority_id INTEGER NOT NULL REFERENCES priorities(id),
-  status event_status NOT NULL DEFAULT 'scheduled',
-  registration_deadline DATE,
-  created_by INTEGER REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+categories: Classificações atribuídas a eventos (ex.: "Vestibular", "Curso").
 
--- 5. Template de requisitos/documentos de evento
-CREATE TABLE event_requirements (
-  id SERIAL PRIMARY KEY,
-  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
-  description VARCHAR(255) NOT NULL  -- ex: "Levar RG", "Comprar ingresso"
-);
+events: Estrutura principal que armazena título, data, link de inscrição, local e categoria.
 
--- 6. Lembretes do usuário para cada requisito
-CREATE TABLE event_reminders (
-  id SERIAL PRIMARY KEY,
-  requirement_id INTEGER NOT NULL REFERENCES event_requirements(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  remind_at TIMESTAMP,                   -- quando notificar
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(requirement_id, user_id)
-);
+event_requirements: Lista de requisitos para o evento (ex.: "Levar RG").
 
--- 7. Participações / Inscrições
-CREATE TABLE event_attendees (
-  id SERIAL PRIMARY KEY,
-  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  status VARCHAR(20) NOT NULL DEFAULT 'confirmed',
-  registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(event_id, user_id)
-);
-
--- 8. Integrações de usuário (Calendar & E-mail)
-CREATE TABLE user_integrations (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  provider VARCHAR(50) NOT NULL,           -- ex: 'google_calendar', 'outlook', 'smtp'
-  access_token TEXT NOT NULL,
-  refresh_token TEXT,
-  expires_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- 9. Sincronização de convites no calendário
-CREATE TABLE calendar_syncs (
-  id SERIAL PRIMARY KEY,
-  event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
-  integration_id INTEGER NOT NULL REFERENCES user_integrations(id),
-  external_event_id VARCHAR(255) NOT NULL, -- ID gerado pelo provedor (iCal UID, etc)
-  synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(event_id, integration_id)
-);
-
--- 10. Log de notificações enviadas
-CREATE TABLE notification_logs (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id),
-  event_id INTEGER REFERENCES events(id),
-  type VARCHAR(50) NOT NULL,              -- 'email', 'push', 'calendar'
-  status VARCHAR(20) NOT NULL,            -- 'sent', 'failed'
-  payload JSONB,                          -- resposta da API / erro
-  sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Índices para otimizar buscas
-CREATE INDEX idx_events_category ON events(category_id);
-CREATE INDEX idx_events_priority ON events(priority_id);
-CREATE INDEX idx_events_start    ON events(start_datetime);
-CREATE INDEX idx_reminders_time  ON event_reminders(remind_at);
-
-```
+event_reminders: Lembretes associados ao evento, com horário de notificação.
 
 ### 3.1.1 BD e Models (Semana 5)
-*Descreva aqui os Models implementados no sistema web*
+
+O sistema possui os seguintes Models implementados:
+
+UserModel: responsável por criação, leitura e atualização de dados de usuários.
+EventModel: gerencia os eventos cadastrados e seus atributos (data, local, prioridade...).
+CategoryModel: permite listar categorias para organizar eventos.
+EventRequirementModel: permite adicionar e consultar itens necessários para cada evento.
+EventReminderModel: define lembretes com data e hora específica.
 
 ### 3.2. Arquitetura (Semana 5)
 
-*Posicione aqui o diagrama de arquitetura da sua solução de aplicação web. Atualize sempre que necessário.*
+O sistema foi construído com base na arquitetura MVC (Model-View-Controller), garantindo separação clara entre regras de negócio, controle de fluxo e estrutura de dados.
+
+Model- Camada responsável pela comunicação com o banco de dados. Cada entidade (usuário, evento, categoria, requisito, lembrete) possui um Model próprio que encapsula as operações SQL (SELECT, INSERT, UPDATE, DELETE).
+
+Controller- Camada intermediária que recebe requisições HTTP, chama os métodos do Model, aplica regras de negócio e retorna as respostas apropriadas (JSON). Está localizada na pasta /controllers.
+
+View- Neste projeto, a camada View é representada por respostas em JSON consumidas via ferramentas como Thunder Client ou frontend externo (não implementado aqui).
+
+ *Fluxo da Arquitetura MVC*
+
+Usuário → (requisição HTTP) → Controller → Model → Banco de Dados
+     ← (resposta JSON) ←
+
+*Organização de pastas*
+
+/models       # Interação com o banco
+/controllers  # Lógica de aplicação
+/routes       # Endpoints da API
+/config       # Conexão com PostgreSQL
+/server.js    # Inicialização da aplicação
 
 **Instruções para criação do diagrama de arquitetura**  
 - **Model**: A camada que lida com a lógica de negócios e interage com o banco de dados.
 - **View**: A camada responsável pela interface de usuário.
 - **Controller**: A camada que recebe as requisições, processa as ações e atualiza o modelo e a visualização.
   
-*Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
+[diagrama](../assets/diagramPIevents.png)
 
 ### 3.3. Wireframes (Semana 03)
 ## 3.3 Wireframes
@@ -223,7 +153,47 @@ As imagens dos wireframes estão a seguir:
 
 ### 3.6. WebAPI e endpoints (Semana 05)
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
+Abaixo estão listados os principais endpoints da API REST desenvolvida neste projeto. Todos aceitam e retornam dados em formato JSON.
+
+Usuários (/users)
+ 
+| Método | Endpoint      | Descrição                         |
+|--------|---------------|-----------------------------------|
+| GET    | /users        | Lista todos os usuários           |
+| GET    | /users/:id    | Busca usuário pelo ID             |
+| POST   | /users        | Cria um novo usuário              |
+| PUT    | /users/:id    | Atualiza dados de um usuário      |
+
+Eventos (/events)
+
+| Método | Endpoint      | Descrição                         |
+|--------|---------------|-----------------------------------|
+| GET    | /events       | Lista todos os eventos            |
+| GET    | /events/:id   | Busca evento por ID               |
+| POST   | /events       | Cria um novo evento               |
+| PUT    | /events/:id   | Atualiza dados de um evento       |
+
+Categorias (/categories)
+
+| Método | Endpoint      | Descrição                         |
+|--------|---------------|-----------------------------------|
+| GET    | /categories   | Lista todas as categorias         |
+
+Requisitos de Evento (/requirements)
+
+| Método | Endpoint                     | Descrição                              |
+|--------|------------------------------|----------------------------------------|
+| GET    | /events/:id/requirements     | Lista requisitos de um evento          |
+| POST   | /requirements                | Cria um novo requisito para um evento  |
+| DELETE | /requirements/:id            | Deleta um requisito                    |
+
+Lembretes (/reminders)
+
+| Método | Endpoint                   | Descrição                             |
+|--------|----------------------------|---------------------------------------|
+| GET    | /events/:id/reminders      | Lista lembretes de um evento          |
+| POST   | /reminders                 | Cria um novo lembrete                 |
+| DELETE | /reminders/:id             | Deleta um lembrete 
 
 ### 3.7 Interface e Navegação (Semana 07)
 
