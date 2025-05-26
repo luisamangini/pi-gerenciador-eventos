@@ -144,7 +144,27 @@ As imagens dos wireframes estão a seguir:
 
 ### 3.4. Guia de estilos (Semana 05)
 
-*Descreva aqui orientações gerais para o leitor sobre assets/wireframetela4como utilizar os componentes do guia de estilos de sua solução.*
+3.4. Guia de Estilos
+A identidade visual do sistema foi definida para garantir consistência, legibilidade e facilidade de uso. O guia abaixo apresenta os principais componentes visuais utilizados no protótipo:
+
+Cores
+As cores principais foram selecionadas com base em tons sóbrios e modernos. Tons terrosos transmitem organização e seriedade, enquanto o verde é usado exclusivamente para indicar confirmação de presença. A aplicação mantém um padrão visual limpo, com combinações harmônicas entre botões, texto e fundo.
+
+Tipografia
+A fonte Inder é utilizada para textos corridos, com tamanho de 20px. Títulos e botões usam a fonte Mplus 1p Bold, criando contraste e facilitando a leitura. A hierarquia tipográfica ajuda o usuário a identificar rapidamente os elementos mais importantes da tela.
+
+Botões
+Os botões seguem o padrão arredondado, com cor de fundo cinza claro. Botões de ação (como confirmação) usam verde, e no estado de hover escurecem levemente, mantendo a identidade visual e sinalizando interatividade.
+
+Layout e espaçamento
+As informações são organizadas em cartões distribuídos em uma grade de três colunas, com espaçamento horizontal de 24px entre os elementos. Esse espaçamento proporciona clareza visual e facilita a navegação.
+
+Ícones e imagens
+Ícones simples são usados em ações rápidas, como confirmar presença ou voltar. Avatares dos usuários aparecem em seções específicas, como a lista de participantes confirmados, sempre em formato circular para manter a padronização visual.
+
+Abaixo, está o quadro visual que reúne os principais elementos gráficos usados no sistema.
+
+![Mini guia de estilos](../assets/guiaestilos.jpg)
 
 
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
@@ -152,7 +172,7 @@ As imagens dos wireframes estão a seguir:
 Abaixo, estão representadas as telas principais do sistema em alta fidelidade, seguindo as funcionalidades definidas nas User Stories e wireframes anteriores:
 
 ### Tela 1 – Dashboard
-![Tela 1 – Dashboard](./assets/altafid1.jpg)
+![Tela 1 – Dashboard](../assets/altafid1.jpg)
 
 ### Tela 2 – Calendário Pessoal
 ![Tela 2 – Calendário](../assets/altafid2.jpg)
