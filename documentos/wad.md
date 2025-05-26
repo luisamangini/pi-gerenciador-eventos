@@ -151,18 +151,17 @@ As imagens dos wireframes estão a seguir:
 
 Abaixo, estão representadas as telas principais do sistema em alta fidelidade, seguindo as funcionalidades definidas nas User Stories e wireframes anteriores:
 
-Tela 1 – Dashboard com filtro por categoria e prioridade
-![Dashboard](../assets/altafid1.jpg)
+### Tela 1 – Dashboard
+![Tela 1 – Dashboard](./assets/altafid1.jpg)
 
-Tela 2 – Detalhes do Evento com lembretes e links úteis
-![Detalhes do Evento](.../assets/altafid2.jpg)
+### Tela 2 – Calendário Pessoal
+![Tela 2 – Calendário](../assets/altafid2.jpg)
 
-Tela 3 – Quem vai (lista de confirmados)
-![Quem Vai](../assets/altafid3.jpg)
+### Tela 3 – Detalhes do Evento
+![Tela 3 – Detalhes do Evento](../assets/altafid3.jpg)
 
-Tela 4 – Calendário mensal integrado aos eventos cadastrados
-![Calendário](../assets/altafid4.jpg)
-
+### Tela 4 – Quem Vai
+![Tela 4 – Quem Vai](../assets/altafid4.jpg)
 
 
 ### 3.6. WebAPI e endpoints (Semana 05)
