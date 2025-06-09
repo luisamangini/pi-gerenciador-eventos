@@ -1,0 +1,46 @@
+<%- include('../layout/main') %>
+
+<header>
+  <div style="font-weight: bold;">OrgaMe</div>
+
+  <img src="/assets/tpne.jpg" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%;">
+</header>
+<h1>Eventos Cadastrados</h1>
+
+<!-- Filtros -->
+<div style="max-width: 800px; margin: 0 auto 20px; display: flex; justify-content: space-between;">
+  <div>
+    <label>Filtrar:</label>
+    <select>
+      <option>Categoria</option>
+    </select>
+  </div>
+  <div>
+    <select>
+      <option>Prioridade</option>
+    </select>
+  </div>
+</div>
+
+<!-- Lista de eventos -->
+<ul>
+  <% eventos.forEach(evento => { %>
+    <li>
+      <div>
+        <strong><%= evento.title_event %></strong><br>
+        <%= evento.start_date %>
+      </div>
+      <div>
+        <button>ver detalhes</button>
+        <button class="confirmado">presença confirmada</button>
+      </div>
+    </li>
+  <% }) %>
+</ul>
+
+<!-- Footer com navegação -->
+<footer>
+  <button>HOME</button>
+  <button>+ NOVO EVENTO</button>
+  <button>CALENDÁRIO</button>
+</footer>

@@ -1,0 +1,52 @@
+<%- include('../layout/main') %>
+
+<header>
+  <div style="font-weight: bold;">OrgaMe</div>
+  <!-- Se não tiver foto do usuário, coloca um avatar padrão -->
+  <img src="https://via.placeholder.com/40" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%;">
+</header>
+
+<h1>Cadastrar Novo Evento</h1>
+
+<form id="event-form">
+  <input type="text" name="title" placeholder="Título" required><br>
+  <textarea name="description" placeholder="Descrição"></textarea><br>
+  <input type="date" name="date" required><br>
+  <input type="time" name="time"><br>
+  <input type="text" name="location" placeholder="Local"><br>
+  <input type="url" name="signup_link" placeholder="Link de inscrição"><br>
+  <input type="date" name="signup_deadline" placeholder="Prazo de inscrição"><br>
+  <input type="number" name="priority" placeholder="Prioridade"><br>
+  <input type="number" name="category_id" placeholder="ID da categoria"><br>
+  <input type="number" name="user_id" placeholder="ID do criador"><br>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<footer>
+  <button>HOME</button>
+  <button>+ NOVO EVENTO</button>
+  <button>CALENDÁRIO</button>
+</footer>
+
+<script>
+  const form = document.getElementById('event-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form));
+
+    const res = await fetch('/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      alert('Evento criado com sucesso!');
+      window.location.href = '/events/visual'; // redireciona pra lista
+    } else {
+      alert('Erro ao criar evento');
+    }
+  });
+</script>

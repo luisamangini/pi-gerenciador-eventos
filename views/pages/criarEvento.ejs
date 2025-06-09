@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Novo Evento</title>
+  <style>
+    form {
+      width: 400px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+    }
+    input, textarea {
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    label {
+      font-weight: bold;
+    }
+    button {
+      padding: 10px;
+      background-color: #0080ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Criar Novo Evento</h1>
+
+  <form action="/events" method="POST">
+    <label for="title">Título:</label>
+    <input type="text" name="title" required>
+
+    <label for="description">Descrição:</label>
+    <textarea name="description" rows="4"></textarea>
+
+    <label for="date">Data:</label>
+    <input type="date" name="date" required>
+
+    <label for="time">Hora:</label>
+    <input type="time" name="time" required>
+
+    <label for="location">Local:</label>
+    <input type="text" name="location" required>
+
+    <label for="signup_link">Link de inscrição:</label>
+    <input type="url" name="signup_link">
+
+    <label for="signup_deadline">Prazo de inscrição:</label>
+    <input type="date" name="signup_deadline">
+
+    <label for="priority">Prioridade (número):</label>
+    <input type="number" name="priority">
+
+    <label for="category_id">ID da Categoria:</label>
+    <input type="number" name="category_id">
+
+    <label for="user_id">ID do Usuário:</label>
+    <input type="number" name="user_id">
+
+    <button type="submit">Salvar Evento</button>
+  </form>
+</body>
+</html>

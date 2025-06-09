@@ -230,7 +230,21 @@ Lembretes (/reminders)
 
 ### 3.7 Interface e Navegação (Semana 07)
 
-*Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+A interface do sistema foi desenvolvida com uso de views EJS conectadas diretamente ao backend da aplicação, permitindo interação em tempo real com os dados armazenados no banco.
+
+Foram implementadas duas páginas principais:
+Página de Listagem de Eventos: exibe todos os eventos cadastrados no sistema, com dados provenientes diretamente do banco de dados. A listagem utiliza um layout simples e responsivo, apresentando o título do evento e sua data de realização. Esta página corresponde ao requisito de "visualização organizada dos eventos" presente nas User Stories.
+Página de Criação de Novo Evento: permite ao usuário inserir novos eventos por meio de um formulário completo. Os campos contemplam informações como título, descrição, data, local, link de inscrição, prazo de inscrição, prioridade, categoria e usuário responsável. O formulário utiliza a Fetch API para envio dos dados via requisição POST, garantindo a atualização dinâmica do sistema sem necessidade de recarregamento da página.
+
+Ambas as páginas foram estilizadas com CSS básico, visando garantir um padrão visual consistente com o guia de estilos definido na seção 3.4 deste documento.
+
+Abaixo seguem as telas desenvolvidas:
+
+Tela 1 – Listagem de Eventos
+Print da página /events/visual
+
+Tela 2 – Formulário de Novo Evento
+Print da página /events/new
 
 ---
 

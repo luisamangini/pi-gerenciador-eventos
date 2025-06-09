@@ -1,6 +1,16 @@
 const EventModel = require('../models/eventModel');
 
-// Listar todos os eventos
+// RENDERIZA A VIEW COM EVENTOS (rota visual /events/visual)
+exports.renderEventosView = async (req, res) => {
+  try {
+    const events = await EventModel.getAll();
+    res.render('pages/events', { eventos: events }); // views/pages/events.ejs
+  } catch (err) {
+    res.status(500).send("Erro ao renderizar eventos: " + err.message);
+  }
+};
+
+// API — Listar todos os eventos (JSON)
 exports.getAll = async (req, res) => {
   try {
     const events = await EventModel.getAll();
@@ -10,7 +20,7 @@ exports.getAll = async (req, res) => {
   }
 };
 
-// Buscar evento por ID
+// API — Buscar evento por ID
 exports.getById = async (req, res) => {
   try {
     const event = await EventModel.getById(req.params.id);
@@ -21,7 +31,7 @@ exports.getById = async (req, res) => {
   }
 };
 
-// Criar novo evento
+// API — Criar novo evento
 exports.create = async (req, res) => {
   try {
     const newEvent = await EventModel.create(req.body);
@@ -31,7 +41,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// Atualizar evento
+// API — Atualizar evento
 exports.update = async (req, res) => {
   try {
     const updatedEvent = await EventModel.update(req.params.id, req.body);
@@ -41,7 +51,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// Deletar evento
+// API — Deletar evento
 exports.remove = async (req, res) => {
   try {
     await EventModel.delete(req.params.id);
@@ -49,4 +59,9 @@ exports.remove = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+};
+
+// Renderiza o formulário de criação
+exports.renderCreateForm = (req, res) => {
+  res.render('criarEvento'); // vamos criar esse EJS
 };

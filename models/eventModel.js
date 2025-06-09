@@ -1,13 +1,13 @@
-const db = require('../models/eventModel');
+const pool = require('../config/db');
 
 class EventModel {
   static async getAll() {
-    const result = await db.query('SELECT * FROM events');
+    const result = await pool.query('SELECT * FROM events');
     return result.rows;
   }
 
   static async getById(id) {
-    const result = await db.query('SELECT * FROM events WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM events WHERE id = $1', [id]);
     return result.rows[0];
   }
 
@@ -24,7 +24,7 @@ class EventModel {
       VALUES (${campos.map((_, i) => `$${i + 1}`).join(', ')})
       RETURNING *`;
 
-    const result = await db.query(query, values);
+    const result = await pool.query(query, values);
     return result.rows[0];
   }
 
@@ -36,16 +36,16 @@ class EventModel {
 
     const set = campos.map((campo, i) => `${campo} = $${i + 1}`).join(', ');
     const values = campos.map(campo => event[campo]);
-    values.push(id); // para o WHERE
+    values.push(id);
 
     const query = `UPDATE events SET ${set} WHERE id = $${values.length} RETURNING *`;
 
-    const result = await db.query(query, values);
+    const result = await pool.query(query, values);
     return result.rows[0];
   }
 
   static async delete(id) {
-    await db.query('DELETE FROM events WHERE id = $1', [id]);
+    await pool.query('DELETE FROM events WHERE id = $1', [id]);
   }
 }
 
